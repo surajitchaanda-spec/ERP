@@ -1,0 +1,10 @@
+node_modules
+npm-debug.log*
+.DS_Store
+.env
+coverage
+dist
+platform/backend/dist
+platform/backend/node_modules
+platform/web-admin/dist
+platform/web-admin/node_modules

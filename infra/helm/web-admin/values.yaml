@@ -1,0 +1,8 @@
+image:
+  repository: erp-web-admin
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: LoadBalancer
+  port: 80
