@@ -1,0 +1,14 @@
+{
+  "name": "@erp/shared-ui",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "lint": "eslint src --ext .ts,.tsx",
+    "test": "jest --config ../../jest.config.ts --runTestsByPath packages/shared-ui/src/__tests__/Button.test.tsx",
+    "storybook": "storybook dev -p 6006 --config-dir ../../.storybook"
+  }
+}

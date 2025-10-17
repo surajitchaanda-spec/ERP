@@ -1,0 +1,13 @@
+{
+  "name": "@erp/shared-services",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "lint": "eslint src --ext .ts",
+    "test": "jest --config ../../jest.config.ts --runTestsByPath packages/shared-services/src/api/__tests__/apiClient.test.ts"
+  }
+}

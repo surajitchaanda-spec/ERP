@@ -1,0 +1,36 @@
+name: Backend CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/backend/**'
+      - 'packages/shared-services/**'
+      - '.github/workflows/ci-backend.yml'
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - run: npm install
+      - run: npm run lint
+      - run: npm run test:unit
+      - run: npm run test:integration
+      - run: npm run test:contract
+      - name: Deploy backend service
+        if: github.ref == 'refs/heads/main'
+        env:
+          BACKEND_DEPLOY_TOKEN: ${{ secrets.BACKEND_DEPLOY_TOKEN }}
+        run: |
+          echo "Deploying backend service"
+      - name: Run database migrations
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "Running database migrations"
