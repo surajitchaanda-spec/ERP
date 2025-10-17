@@ -16,21 +16,21 @@ import './src/shared/storage/queryPersist';
 
 const App = () => (
   <AnalyticsProvider>
-    <NotificationsProvider>
-      <SafeAreaProvider>
-        <PaperProvider theme={theme}>
-          <QueryClientProvider client={queryClient}>
-            <AuthProvider>
+    <SafeAreaProvider>
+      <PaperProvider theme={theme}>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <NotificationsProvider>
               <StudentsProvider>
                 <NavigationContainer>
                   <AppNavigator />
                 </NavigationContainer>
               </StudentsProvider>
-            </AuthProvider>
-          </QueryClientProvider>
-        </PaperProvider>
-      </SafeAreaProvider>
-    </NotificationsProvider>
+            </NotificationsProvider>
+          </AuthProvider>
+        </QueryClientProvider>
+      </PaperProvider>
+    </SafeAreaProvider>
   </AnalyticsProvider>
 );
 
