@@ -1,0 +1,26 @@
+{
+  "testRunner": "jest",
+  "runnerConfig": "./e2e/jest.config.js",
+  "configurations": {
+    "ios.sim.debug": {
+      "device": {
+        "type": "iPhone 15"
+      },
+      "app": {
+        "type": "ios.app",
+        "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/ERPParent.app",
+        "build": "xcodebuild -workspace ios/ERPParent.xcworkspace -scheme ERPParent -configuration Debug -sdk iphonesimulator"
+      }
+    },
+    "android.emu.debug": {
+      "device": {
+        "avdName": "Pixel_6"
+      },
+      "app": {
+        "type": "android.apk",
+        "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk",
+        "build": "cd android && ./gradlew assembleDebug assembleAndroidTest"
+      }
+    }
+  }
+}
