@@ -1,0 +1,41 @@
+.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+.sidebar {
+  background: #1f2937;
+  color: #fff;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sidebar h1 {
+  font-size: 1.5rem;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sidebar a {
+  color: #cbd5f5;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.sidebar a.active {
+  color: #fff;
+}
+
+main {
+  background: #f9fafb;
+  padding: 2rem;
+  overflow-y: auto;
+}

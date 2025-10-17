@@ -1,0 +1,11 @@
+image:
+  repository: erp-backend
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+env:
+  NODE_ENV: production
