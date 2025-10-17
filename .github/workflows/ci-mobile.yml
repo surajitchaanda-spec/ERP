@@ -1,0 +1,57 @@
+name: Mobile CI
+
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: 'mobile platform'
+        required: true
+        default: 'android'
+        type: choice
+        options:
+          - android
+          - ios
+  push:
+    branches: [main]
+    paths:
+      - 'apps/mobile/**'
+      - '.github/workflows/ci-mobile.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      PLATFORM: ${{ github.event.inputs.platform || 'android' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - run: npm install
+      - run: npm run lint
+      - run: npm run test
+      - name: Install mobile toolchain
+        run: |
+          if [ "$PLATFORM" = "ios" ]; then
+            echo "Setting up iOS build environment"
+          else
+            echo "Setting up Android build environment"
+          fi
+      - name: Build mobile app
+        run: |
+          if [ "$PLATFORM" = "ios" ]; then
+            echo "Building iOS app"
+          else
+            echo "Building Android app"
+          fi
+      - name: Distribute build
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          TESTFLIGHT_API_KEY: ${{ secrets.TESTFLIGHT_API_KEY }}
+        run: |
+          if [ "$PLATFORM" = "ios" ]; then
+            echo "Uploading to TestFlight"
+          else
+            echo "Uploading to Firebase App Distribution"
+          fi

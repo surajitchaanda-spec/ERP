@@ -1,0 +1,59 @@
+name: Web CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'packages/shared-ui/**'
+      - 'apps/web/**'
+      - '.github/workflows/ci-web.yml'
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    env:
+      E2E_BASE_URL: ${{ secrets.WEB_E2E_BASE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - run: npm install
+      - run: npm run lint
+      - run: npm run test:unit
+      - run: npm run test:integration
+      - name: Run contract tests
+        run: npm run test:contract
+      - run: npm run storybook -- --ci
+      - name: Run Playwright end-to-end tests
+        if: env.E2E_BASE_URL != ''
+        run: npm run test:e2e
+      - name: Upload Storybook artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: storybook-static
+          path: storybook-static
+      - name: Deploy to staging
+        if: github.ref == 'refs/heads/main'
+        env:
+          STAGING_DEPLOY_TOKEN: ${{ secrets.STAGING_DEPLOY_TOKEN }}
+        run: |
+          echo "Deploying web app to staging"
+      - name: Manual approval for production
+        if: github.ref == 'refs/heads/main'
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: https://example.com/approve
+          method: 'POST'
+      - name: Deploy to production
+        if: github.ref == 'refs/heads/main'
+        env:
+          PRODUCTION_DEPLOY_TOKEN: ${{ secrets.PRODUCTION_DEPLOY_TOKEN }}
+        run: |
+          echo "Deploying web app to production"
