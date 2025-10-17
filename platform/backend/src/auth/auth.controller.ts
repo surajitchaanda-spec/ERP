@@ -1,14 +1,22 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { RequestResetDto } from './dto/request-reset.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { UserRole } from '../common/entities/user-account.entity';
+import { RolesGuard } from './guards/roles.guard';
+import { Roles } from './decorators/roles.decorator';
+import { ImpersonateDto } from './dto/impersonate.dto';
+import { TenantContextService } from '../tenancy/tenant-context.service';
 
 @Controller({ path: 'auth', version: '1' })
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly tenantContext: TenantContextService,
+  ) {}
 
   @Post('login')
   async login(@Body() dto: LoginDto) {
@@ -18,7 +26,7 @@ export class AuthController {
 
   @Post('register')
   register(@Body() dto: RegisterDto) {
-    return this.authService.register(dto.email, dto.password, dto.role, dto.tenantId);
+    return this.authService.register(dto.email, dto.password);
   }
 
   @Post('password/request')
@@ -37,16 +45,10 @@ export class AuthController {
   }
 
   @Post('impersonate')
-  impersonate() {
-    return this.authService.login({
-      id: 'system',
-      tenantId: 'system',
-      passwordHash: '',
-      email: 'system@erp.local',
-      provider: 'system',
-      externalId: 'system',
-      role: UserRole.ADMIN,
-      active: true,
-    });
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.ADMIN)
+  impersonate(@Body() dto: ImpersonateDto) {
+    const tenantId = this.tenantContext.getTenantId();
+    return this.authService.impersonate(dto.userId, tenantId);
   }
 }

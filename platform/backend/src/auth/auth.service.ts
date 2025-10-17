@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
@@ -45,15 +45,27 @@ export class AuthService {
     };
   }
 
-  async register(email: string, password: string, role: UserRole, tenantId: string) {
+  async register(email: string, password: string) {
+    const tenantId = this.tenantContext.getTenantId();
     const passwordHash = await bcrypt.hash(password, 10);
     const user = this.usersRepository.create({
       email,
       passwordHash,
-      role,
+      role: UserRole.PARENT,
       tenantId,
     });
     return this.usersRepository.save(user);
+  }
+
+  async impersonate(userId: string, tenantId: string) {
+    const user = await this.usersRepository.findOne({ where: { id: userId, tenantId } });
+    if (!user) {
+      throw new NotFoundException('User not found in tenant context');
+    }
+    if (!user.active) {
+      throw new ForbiddenException('Cannot impersonate an inactive user');
+    }
+    return this.login(user);
   }
 
   async socialLogin(provider: string, externalId: string, email: string) {
