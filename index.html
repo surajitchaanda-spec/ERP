@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Harmony School Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="hero">
+        <div class="hero__headline">
+          <p class="hero__badge">Harmony School</p>
+          <h1>One colourful hub for every campus role</h1>
+        </div>
+        <p class="hero__time" id="statusTime">09:41</p>
+      </header>
+
+      <section class="role-switcher" aria-label="Select experience">
+        <button class="role-switcher__button active" data-role="student">
+          <i class="fa-solid fa-user-graduate"></i>
+          Students
+        </button>
+        <button class="role-switcher__button" data-role="staff">
+          <i class="fa-solid fa-chalkboard-user"></i>
+          Staff
+        </button>
+        <button class="role-switcher__button" data-role="principal">
+          <i class="fa-solid fa-crown"></i>
+          Principal
+        </button>
+      </section>
+
+      <section class="id-card" aria-label="Digital identity">
+        <div class="id-card__cover" id="roleBanner"></div>
+        <div class="id-card__body">
+          <div class="id-card__avatar" id="roleAvatar"></div>
+          <div class="id-card__details">
+            <p class="id-card__label" id="roleLabel">Student ID</p>
+            <h2 class="id-card__name" id="roleName">Aanya Sharma</h2>
+            <p class="id-card__meta" id="roleMeta">Grade 10 · Section B</p>
+            <p class="id-card__code" id="roleCode">ID: AIS10245</p>
+          </div>
+          <button class="id-card__qr" aria-label="Open QR code">
+            <i class="fa-solid fa-qrcode"></i>
+          </button>
+        </div>
+      </section>
+
+      <section class="summary" aria-live="polite">
+        <h3 id="summaryTitle">Today for students</h3>
+        <p id="summaryBody">
+          Quick look at lessons, clubs and house points to keep you buzzing.
+        </p>
+      </section>
+
+      <section class="quick-actions" id="quickActions" aria-label="Quick actions">
+        <!-- populated by script -->
+      </section>
+
+      <section class="feature-grid" id="featureGrid" aria-label="Key highlights">
+        <!-- populated by script -->
+      </section>
+
+      <nav class="bottom-nav" aria-label="Primary">
+        <button class="bottom-nav__button active">
+          <i class="fa-solid fa-house"></i>
+          Home
+        </button>
+        <button class="bottom-nav__button">
+          <i class="fa-solid fa-book"></i>
+          Learn
+        </button>
+        <button class="bottom-nav__fab" aria-label="Add note">
+          <i class="fa-solid fa-plus"></i>
+        </button>
+        <button class="bottom-nav__button">
+          <i class="fa-solid fa-calendar"></i>
+          Plan
+        </button>
+        <button class="bottom-nav__button">
+          <i class="fa-solid fa-user"></i>
+          Profile
+        </button>
+      </nav>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
