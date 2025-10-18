@@ -3,7 +3,7 @@ import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 import { client } from '../api/client';
-import { useAuth } from '../../features/auth/AuthContext';
+import { AuthContext } from '../../features/auth/AuthContext';
 
 interface NotificationsContextValue {
   requestPermissions: () => Promise<boolean>;
@@ -20,7 +20,16 @@ Notifications.setNotificationHandler({
 });
 
 export const NotificationsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user } = useAuth();
+  const auth = useContext(AuthContext);
+
+  if (!auth) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('NotificationsProvider must be rendered within AuthProvider.');
+    }
+    return <>{children}</>;
+  }
+
+  const { user } = auth;
 
   useEffect(() => {
     const register = async () => {
